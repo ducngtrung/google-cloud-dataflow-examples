@@ -17,9 +17,9 @@ This example shows how to ingest a raw CSV file into BigQuery with minimal trans
 and a great one to start with in order to become familiar with Dataflow.
 
 There are three main steps:
-1. [Read in the file](dataflow_python_examples/data_ingestion.py#L100-L106).
-2. [Transform the CSV format into a dictionary format](dataflow_python_examples/data_ingestion.py#L107-L113).
-3. [Write the data to BigQuery](dataflow_python_examples/data_ingestion.py#L114-L126).
+1. [Read in the file](pipelines/data_ingestion.py#L100-L106).
+2. [Transform the CSV format into a dictionary format](pipelines/data_ingestion.py#L107-L113).
+3. [Write the data to BigQuery](pipelines/data_ingestion.py#L114-L126).
 
 
 ### Read data in from the file.
@@ -48,7 +48,7 @@ processing will occur in the pipeline after this stage.
 
 ### Full code examples
 
-Ready to dive deeper?  Check out the complete code [here](dataflow_python_examples/data_ingestion.py).
+Ready to dive deeper?  Check out the complete code [here](pipelines/data_ingestion.py).
 
 ## Transforming data in Dataflow
 ![Alt text](img/csv_file_to_bigquery.png?raw=true "CSV file to BigQuery")
@@ -58,9 +58,9 @@ This example builds upon simple ingestion, and demonstrates some basic data type
 In line with the previous example there are 3 steps.  The transformation step is made more useful by tranlating the
 date format from the source data into a date format BigQuery accepts.
 
-1. [Read in the file](dataflow_python_examples/data_transformation.py#L136-L142).
-2. [Transform the CSV format into a dictionary format and translate the date format](dataflow_python_examples/data_transformation.py#L143-L149).
-3. [Write the data to BigQuery](dataflow_python_examples/data_transformation.py#L150-L161).
+1. [Read in the file](pipelines/data_transformation.py#L136-L142).
+2. [Transform the CSV format into a dictionary format and translate the date format](pipelines/data_transformation.py#L143-L149).
+3. [Write the data to BigQuery](pipelines/data_transformation.py#L150-L161).
 
 
 ### Read data in from the file.
@@ -80,7 +80,7 @@ Just as in our previous example, this example uses BigQuery IO to write out to B
 
 ### Full code examples
 
-Ready to dive deeper?  Check out the complete code [here](dataflow_python_examples/data_transformation.py).
+Ready to dive deeper?  Check out the complete code [here](pipelines/data_transformation.py).
 
 ## Joining file and BigQuery datasets in Dataflow
 ![Alt text](img/csv_join_bigquery_to_bigquery.png?raw=true "CSV file joined with BigQuery data to BigQuery")
@@ -90,10 +90,10 @@ containing reference is read from BigQuery.  The two datasets are then joined in
 dataset down to BigQuery.
 
 This pipeline contains 4 steps:
-1. [Read in the primary dataset from a file](dataflow_python_examples/data_enrichment.py#L165-L176).
-2. [Read in the reference data from BigQuery](dataflow_python_examples/data_enrichment.py#L155-L163).
-3. [Custom Python code](dataflow_python_examples/data_enrichment.py#L138-L143) is used to [join the two datasets](dataflow_python_examples/data_enrichment.py#L177-L180).
-4. [The joined dataset is written out to BigQuery](dataflow_python_examples/data_enrichment.py#L181-L194).
+1. [Read in the primary dataset from a file](pipelines/data_enrichment.py#L165-L176).
+2. [Read in the reference data from BigQuery](pipelines/data_enrichment.py#L155-L163).
+3. [Custom Python code](pipelines/data_enrichment.py#L138-L143) is used to [join the two datasets](pipelines/data_enrichment.py#L177-L180).
+4. [The joined dataset is written out to BigQuery](pipelines/data_enrichment.py#L181-L194).
 
 
 ### Read in the primary dataset from a file
@@ -125,7 +125,7 @@ examples.
 
 ### Full code examples
 
-Ready to dive deeper?  Check out the complete code [here](dataflow_python_examples/data_enrichment.py).
+Ready to dive deeper?  Check out the complete code [here](pipelines/data_enrichment.py).
 
 ## Ingest data from files into Bigquery reading the file structure from Datastore
 
@@ -174,12 +174,12 @@ age,INTEGER
 
 You can check parameters accepted by the `datastore_schema_import.py` script with the following command:
 ```
-python dataflow_python_examples/datastore_schema_import.py --help
+python pipelines/datastore_schema_import.py --help
 ```
 
 Run the `datastore_schema_import.py` script to create the entry in Google Cloud Datastore using the following command:
 ```
-python dataflow_python_examples/datastore_schema_import.py --schema-file=<path_to_TABLENAME.csv>
+python pipelines/datastore_schema_import.py --schema-file=<path_to_TABLENAME.csv>
 ```
 
 ### 4. Upload files into Google Cloud Storage
@@ -199,12 +199,12 @@ test_2,test_2,40
 ### 5. Run pipeline
 You can check parameters accepted by the `data_ingestion_configurable.py` script with the following command:
 ```
-python dataflow_python_examples/data_ingestion_configurable --help
+python pipelines/data_ingestion_configurable --help
 ```
 
 You can run the pipeline locally with the following command:
 ```
-python dataflow_python_examples/data_ingestion_configurable.py \
+python pipelines/data_ingestion_configurable.py \
 --project=###PUT HERE PROJECT ID### \
 --input-bucket=###PUT HERE GCS BUCKET NAME: gs://bucket_name ### \
 --input-path=###PUT HERE INPUT FOLDER### \
@@ -215,7 +215,7 @@ python dataflow_python_examples/data_ingestion_configurable.py \
 or you can run the pipeline on Google Dataflow using the following command:
 
 ```
-python dataflow_python_examples/data_ingestion_configurable.py \
+python pipelines/data_ingestion_configurable.py \
 --runner=DataflowRunner \
 --max_num_workers=100 \
 --autoscaling_algorithm=THROUGHPUT_BASED \
@@ -242,11 +242,11 @@ Joining two datasets from BigQuery is a common use case when a data lake has bee
 Creating a data mart with denormalized datasets facilitates better performance when using visualization tools.
 
 This pipeline contains 4 steps:
-1. [Read in the primary dataset from BigQuery](dataflow_python_examples/data_lake_to_mart.py#L278-L283).
-2. [Read in the reference data from BigQuery](dataflow_python_examples/data_lake_to_mart.py#L248-L276).
-3. [Custom Python code](dataflow_python_examples/data_lake_to_mart.py#L210-L224) is used to [join the two datasets](dataflow_python_examples/data_lake_to_mart.py#L284-L287).
-Alternatively, [CoGroupByKey can be used to join the two datasets](dataflow_python_examples/data_lake_to_mart_cogroupbykey.py#L300-L310).
-4. [The joined dataset is written out to BigQuery](dataflow_python_examples/data_lake_to_mart.py#L288-L301).
+1. [Read in the primary dataset from BigQuery](pipelines/data_lake_to_mart.py#L278-L283).
+2. [Read in the reference data from BigQuery](pipelines/data_lake_to_mart.py#L248-L276).
+3. [Custom Python code](pipelines/data_lake_to_mart.py#L210-L224) is used to [join the two datasets](pipelines/data_lake_to_mart.py#L284-L287).
+Alternatively, [CoGroupByKey can be used to join the two datasets](pipelines/data_lake_to_mart_cogroupbykey.py#L300-L310).
+4. [The joined dataset is written out to BigQuery](pipelines/data_lake_to_mart.py#L288-L301).
 
 
 ### Read in the primary dataset from BigQuery
@@ -281,6 +281,6 @@ examples.
 ### Full code examples
 
 Ready to dive deeper?  Check out the complete code.
-The example using side inputs is [here](dataflow_python_examples/data_lake_to_mart.py) and the example using CoGroupByKey is
-[here](dataflow_python_examples/data_lake_to_mart_cogroupbykey.py).
+The example using side inputs is [here](pipelines/data_lake_to_mart.py) and the example using CoGroupByKey is
+[here](pipelines/data_lake_to_mart_cogroupbykey.py).
 
